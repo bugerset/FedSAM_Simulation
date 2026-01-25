@@ -155,13 +155,11 @@ Optimizer: typically SGD with weight decay.
 
 $$w_{t+1} = \sum_{k=1}^{K} \frac{n_k}{n} w_k^t$$
 
-​
-	• n_k: number of samples at client k
+(n_k: number of samples at client k)
 
-BatchNorm buffers (running_mean/var, num_batches_tracked):
+BatchNorm buffers (running_mean/var, num_batches_tracked): 
 
-
-	•	In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
+In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
 
 ## Expected Output
 
