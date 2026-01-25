@@ -153,11 +153,10 @@ Optimizer: typically SGD with weight decay.
 
 **The server aggregates client models with standard weighted averaging (FedAvg)**:
 
-$w^{t+1} = \sum_{k \in \mathcal{k=1} \frac{n_k}{\sum_{j\in\mathcal{S}_t} n_j}\;\theta_k^{t}$
-	•	\mathcal{S}_t: participating clients in round t
+$w^{t+1} = \sum_{k \in \{k=1} \frac{n_k}{n}}\;\w_k^{t}$<br>
 	•	n_k: number of samples at client k
 
-BatchNorm buffers (running_mean/var, num_batches_tracked):
+BatchNorm buffers (running_mean/var, num_batches_tracked):<br>
 	•	In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
 
 ## Expected Output
