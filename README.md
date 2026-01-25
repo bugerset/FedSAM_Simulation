@@ -139,7 +139,7 @@ $$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 1.	**Compute gradient at current weights:**
 
-    $$\nabla g = \nabla_ \mathcal{L}_k(w)$$
+    $$\nabla g = \nabla \mathcal{L}_k(w)$$
 
 2.	**Perturb weights toward the gradient direction:**
 	
