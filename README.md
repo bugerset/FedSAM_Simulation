@@ -139,11 +139,11 @@ $$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 1.	**Compute gradient at current weights:**
 
-    $$\nabla g = \nabla \mathcal{L}_k(w)$$
+    $$gradient = \nabla \mathcal{L}_k(w)$$
 
 2.	**Perturb weights toward the gradient direction:**
 	
-    $$\epsilon^{*} = \rho \frac{\nabla_{\theta} \mathcal{L}_k(\theta)}{\|\nabla_{\theta} \mathcal{L}_k(\theta)\|_2}$$
+	$$\epsilon^* = \rho \frac{g}{\|g|\|_2}$$
 
 3.	**Compute gradient at perturbed weights and do the descent step:**
 	
@@ -184,42 +184,3 @@ With data_set="cifar10", num_clients=100, client_frac=0.25, local_epochs=5, batc
 <br>183 Round ACC=78.83%, loss=0.631958
 <br>191 Round ACC=81.23%, loss=0.580031
 <br>200 Round ACC=81.77%, loss=0.594970
-## 🛠️ FedSAM Implementation Notes
-
-### 1) Client-side FedSAM Update (`fl/fedsam.py`)
-
-FedSAM은 각 클라이언트에서 로컬로 Sharpness-Aware Minimization(SAM)을 적용하여 모델의 일반화 성능을 높입니다.
-
-**SAM 목적 함수 (클라이언트별):**
-
-$$\min_{\theta}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(\theta + \epsilon)$$
-
-**표준 2단계 SAM 업데이트 과정:**
-
-1. **현재 가중치에서 그레이디언트 계산:**
-
-   $$\nabla g = \nabla_{\theta} \mathcal{L}_k(\theta)$$
-
-2. **그레이디언트 방향으로 가중치 섭동(Perturbation) 적용:**
-
-   $$\epsilon^* = \rho \frac{\nabla_{\theta} \mathcal{L}_k(\theta)}{\|\nabla_{\theta} \mathcal{L}_k(\theta)\|_2}$$
-
-3. **섭동된 지점에서 그레이디언트 계산 및 최종 업데이트:**
-
-   $$\theta \leftarrow \theta - \eta \nabla_{\theta} \mathcal{L}_k(\theta + \epsilon^*)$$
-
-* **BatchNorm 참고**: 안정성을 위해 섭동 단계(Perturb forward/backward) 동안에는 BatchNorm의 running statistics 업데이트를 비활성화하는 것이 권장됩니다.
-* **Optimizer**: 일반적으로 Weight Decay가 포함된 SGD를 사용합니다.
-
----
-
-## 🏛️ 2) Server-side Aggregation (`fl/server.py`)
-
-**서버는 표준 가중 평균 방식(FedAvg)을 사용하여 클라이언트 모델을 병합합니다:**
-
-$$w_{t+1} = \sum_{k=1}^{K} \frac{n_k}{n} w_k^t$$
-
-* $n_k$: 클라이언트 $k$가 보유한 샘플 수입니다.
-* **BatchNorm 버퍼**: `running_mean`, `running_var` 등의 버퍼는 가중 평균을 통해 병합하거나 설정에 따라 로컬에 유지할 수 있습니다.
-
----
