@@ -14,8 +14,8 @@ This simulation covers:
 	•	Client-side FedSAM: local training uses two-step SAM update (perturb → descent).
 	•	Server-side Aggregation: standard weighted FedAvg aggregation of client models (Same as FedAVG aggregation).
 	•	BatchNorm Handling (stability):
-	•	SAM training typically disables BN running-stat updates during the first forward pass.
-	•	Server aggregation can average BN buffers (running_mean/var) with standard averaging (no special correction).
+		•	SAM training typically disables BN running-stat updates during the first forward pass.
+		•	Server aggregation can average BN buffers (running_mean/var) with standard averaging (no special correction).
 
 ⸻
 
