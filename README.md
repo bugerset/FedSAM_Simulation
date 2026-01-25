@@ -147,7 +147,7 @@ $$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 3.	**Compute gradient at perturbed weights and do the descent step:**
 	
-	$$\quad w \leftarrow w - \eta \nabla_ \mathcal{L}(w + \epsilon^*)$$
+	$$\quad w \leftarrow w - \eta \nabla \mathcal{L}(w + \epsilon^*)$$
 
 BatchNorm note (recommended): During the “perturb forward/backward”, many SAM implementations disable BN running-stat updates for stability.
 
