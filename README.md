@@ -138,7 +138,7 @@ A standard two-step SAM update is:
 	1.	Compute gradient at current weights:
 $\nabla g = \nabla_{\theta} \mathcal{L}_k(\theta)$
 	2.	Perturb weights toward the gradient direction:
-$\epsilon = \rho \cdot \frac{g}{\|g\| + \varepsilon},\quad \theta^{+}=\theta+\epsilon$
+$\epsilon^* = \argmax{L(w+\epsilon}_\|\epsilon|\ \equal \rho \cdot \frac{g}{\|g\| + noise}$
 	3.	Compute gradient at perturbed weights and do the descent step:
 $\theta \leftarrow \theta - \eta \nabla_{\theta}\mathcal{L}_k(\theta^{+})$
 
@@ -153,7 +153,7 @@ Optimizer: typically SGD with weight decay.
 
 **The server aggregates client models with standard weighted averaging (FedAvg)**:
 
-$w^{t+1} = \sum_{k \in \{k=1}} \frac{n_k}{n}}\;\w_k^{t}$<br>
+$w_{t+1} = \sum_{k=1}^{K} \frac{n_k}{n} w_k^t$<br>​
 	•	n_k: number of samples at client k
 
 BatchNorm buffers (running_mean/var, num_batches_tracked):<br>
