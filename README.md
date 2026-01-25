@@ -143,11 +143,11 @@ $$\min_{\theta}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(\theta + \epsilon)$
 
 2.	**Perturb weights toward the gradient direction:**
 	
-    $$\epsilon^* = \rho \frac{\nabla_{\theta} \mathcal{L}_k(\theta)}{\|\nabla_{\theta} \mathcal{L}_k(\theta)\|_2}$$
+    $$\epsilon^{*} = \rho \frac{\nabla_{\theta} \mathcal{L}_k(\theta)}{\|\nabla_{\theta} \mathcal{L}_k(\theta)\|_2}$$
 
 3.	**Compute gradient at perturbed weights and do the descent step:**
 	
-	$$\quad \theta \leftarrow \theta - \eta \nabla_{\theta} \mathcal{L}_k(\theta + \epsilon^*)$$
+	$$\quad w \leftarrow w - \eta \nabla_{\theta} \mathcal{L}(w + \epsilon^*)$$
 
 BatchNorm note (recommended): During the “perturb forward/backward”, many SAM implementations disable BN running-stat updates for stability.
 
@@ -163,8 +163,7 @@ $$w_{t+1} = \sum_{k=1}^{K} \frac{n_k}{n} w_k^t$$
 
 * (**n_k**: number of samples at client k)
 
-* **BatchNorm buffers (running_mean/var, num_batches_tracked):**
-	• In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
+* **BatchNorm buffers (running_mean/var, num_batches_tracked):** In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
 
 ## Expected Output
 
