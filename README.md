@@ -4,8 +4,6 @@ This repository provides a PyTorch implementation of FedSAM (Generalized Federat
 
 FedSAM improves robustness under Non-IID data by training each client with a sharpness-aware objective (SAM), then aggregating client models on the server.
 
-⸻
-
 ## Project Overview
 
 This simulation covers:
@@ -16,8 +14,6 @@ This simulation covers:
 	•	BatchNorm Handling (stability):
 		─ SAM training typically disables BN running-stat updates during the first forward pass.
 		─ Server aggregation can average BN buffers (running_mean/var) with standard averaging (no special correction).
-
-⸻
 
 ## Recommended Folder Structure
 
