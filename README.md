@@ -9,6 +9,7 @@ FedSAM improves robustness under Non-IID data by training each client with a sha
 ## Project Overview
 
 This simulation covers:
+
 	•	Data Partitioning: IID and Non-IID splits (Dirichlet distribution).
 	•	Client-side FedSAM: local training uses two-step SAM update (perturb → descent).
 	•	Server-side Aggregation: standard weighted FedAvg aggregation of client models (Same as FedAVG aggregation).
