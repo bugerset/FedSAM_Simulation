@@ -1,0 +1,44 @@
+import argparse
+
+def parse_args():
+    parser = argparse.ArgumentParser(description="Federate Learning MobileNet CIFAR-10")
+
+    # seed, device, train function setting
+    parser.add_argument("--seed", type=int, default=845)
+    parser.add_argument("--device", type=str, default="auto", choices=["auto", "cpu", "cuda", "mps"])
+
+    # dataset setting
+    parser.add_argument("--data-set", type=str, default="mnist", choices=["cifar10", "mnist"])
+    parser.add_argument("--data-root", type=str, default="./data")
+    parser.add_argument("--augment", dest="augment", action="store_true", default=True)
+    parser.add_argument("--no-augment", dest="augment", action="store_false")
+    parser.add_argument("--normalize", dest="normalize", action="store_true", default=True)
+    parser.add_argument("--no-normalize", dest="normalize", action="store_false")
+    parser.add_argument("--test-batch-size", type=int, default=128)
+
+    # Client, Batch, Local Epochs, Communicate rounds setting0
+    parser.add_argument("--num-clients", type=int, default=10)
+    parser.add_argument("--client-frac", type=float, default=0.25)
+    parser.add_argument("--local-epochs", type=int, default=1)
+    parser.add_argument("--batch-size", type=int, default=50)
+    parser.add_argument("--lr", type=float, default=1e-2)
+    parser.add_argument("--rounds", type=int, default=10)
+
+    # IID, N-IID setting
+    parser.add_argument("--partition", type=str, default="iid", choices=["iid", "niid"])
+    parser.add_argument("--alpha", type=float, default=0.4)
+    parser.add_argument("--min-size", type=int, default=10)
+    parser.add_argument("--print-labels", dest="print_labels", action="store_true", default=True)
+    parser.add_argument("--no-print-labels", dest="print_labels", action="store_false")
+
+    # Learning rate Scheduler
+    parser.add_argument("--lr-factor", type=float, default=0.5)
+    parser.add_argument("--lr-patience", type=int, default=10)
+    parser.add_argument("--min-lr", type=float, default=1e-6)    
+    parser.add_argument("--lr-threshold", type=float, default=1e-4)
+    parser.add_argument("--lr-cooldown", type=int, default=0)
+
+    # FedSAM rho setting
+    parser.add_argument("--sam-rho", type=float, default=0.05)
+
+    return parser.parse_args()
