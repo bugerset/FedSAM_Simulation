@@ -132,14 +132,14 @@ Key arguments (from utils/parser.py):
 FedSAM applies Sharpness-Aware Minimization (SAM) locally on each client.
 
 **SAM objective (per client):**
-$$\min_{\theta}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(\theta + \epsilon)$$
+$$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 **A standard two-step SAM update is:**
 
 
 1.	**Compute gradient at current weights:**
 
-    $$\nabla g = \nabla_{\theta} \mathcal{L}_k(\theta)$$
+    $$\nabla g = \nabla_ \mathcal{L}_k(w)$$
 
 2.	**Perturb weights toward the gradient direction:**
 	
@@ -147,7 +147,7 @@ $$\min_{\theta}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(\theta + \epsilon)$
 
 3.	**Compute gradient at perturbed weights and do the descent step:**
 	
-	$$\quad w \leftarrow w - \eta \nabla_{\theta} \mathcal{L}(w + \epsilon^*)$$
+	$$\quad w \leftarrow w - \eta \nabla_ \mathcal{L}(w + \epsilon^*)$$
 
 BatchNorm note (recommended): During the “perturb forward/backward”, many SAM implementations disable BN running-stat updates for stability.
 
