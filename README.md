@@ -143,7 +143,7 @@ $$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 2.	**Perturb weights toward the gradient direction:**
 	
-	$$\epsilon^* = \rho \frac{g}{\|g|\|_2}$$
+	$$\epsilon^* = \rho \frac{g}{\|g|_2}$$
 
 3.	**Compute gradient at perturbed weights and do the descent step:**
 	
