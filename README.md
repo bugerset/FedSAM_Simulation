@@ -135,7 +135,7 @@ $$\min_{\theta}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(\theta + \epsilon)$
 
 A standard two-step SAM update is:
 	1.	Compute gradient at current weights:
-$g = \nabla_{\theta} \mathcal{L}_k(\theta)$
+$\nabla g = \nabla_{\theta} \mathcal{L}_k(\theta)$
 	2.	Perturb weights toward the gradient direction:
 $\epsilon = \rho \cdot \frac{g}{\|g\| + \varepsilon},\quad \theta^{+}=\theta+\epsilon$
 	3.	Compute gradient at perturbed weights and do the descent step:
@@ -152,60 +152,12 @@ Optimizer: typically SGD with weight decay.
 
 **The server aggregates client models with standard weighted averaging (FedAvg)**:
 
-$\theta^{t} = \sum_{k \in \mathcal{S}_t} \frac{n_k}{\sum_{j\in\mathcal{S}_t} n_j}\;\theta_k^{t}$
+$w^{t+1} = \sum_{k \in \mathcal{k=1} \frac{n_k}{\sum_{j\in\mathcal{S}_t} n_j}\;\theta_k^{t}$
 	•	\mathcal{S}_t: participating clients in round t
 	•	n_k: number of samples at client k
 
 BatchNorm buffers (running_mean/var, num_batches_tracked):
 	•	In practice, you can aggregate them using the same weighted averaging (or optionally keep them local depending on your setting).
-  이거야
-## FedDyn Implementation Notes
-
-### 1) Client-side Update (fl/feddyn.py)
-
-Each client minimizes a dynamically regularized objective to reduce client drift from the global optimum.
-
-**Local objective (per client):**
-
-$$𝝷_k^t = L_{total}(𝝷) - {\langle g_k^{t-1}, 𝝷\rangle} + \frac{\alpha}{2} * |\theta-\theta^{t-1}\|^2$$
-
-- $L_{\text{task}}$: standard cross-entropy loss on local batch $b$.
-- $-\langle 𝝷_k^{t}, \theta \rangle$: linear correction term using the client-specific state $h_k^t$.
-- $\frac{\alpha}{2}\|\theta-\theta^{t}\|^2$: proximal term keeping the local model close to the global model $\theta^t$.
-
-**Optimizer:** SGD with `momentum=0.9`, `weight_decay=5e-4`.
-
-**Client state update (after local training):**
-
-$$
-g_k^{t} = g_k^{t-1} - \alpha(\theta_k^{t}-\theta^{t-1})
-$$
-
-where $\theta_k^{t+1}$ is the client model after local training and $\theta^{t}$ is the global model received at the start of round $t$.
-
-⸻
-
-2) Server-side Aggregation (fl/server.py)
-
-The server maintains a global correction state $h$ and updates the global model using a corrected averaging scheme.
-
-(a) Server state $h$ update:
-$$h^{t} = h^{t-1} - \alpha \cdot \frac{1}{m}\sum_{k\in P_i}(\theta_k^{t}-\theta^{t-1})$$<br>
-	•	$m$: Number of all clients<br>
-	•	The server state $$h$$ accumulates the average drift $$(\theta_k^{t}-\theta^{t-1})$$ across every participating clients.
-
-(b) Global model update
-For learnable parameters (weights/bias):
-
-$$\\overline{\theta^{t}} = \frac{1}{P}\sum_{k\in P_i}\theta_k^{t}$$
-
-$$\theta^t = \\overline{\theta^{t}} - \frac{1}{\alpha}h^{t}$$
-
-For BatchNorm buffers (e.g., running_mean, running_var, num_batches_tracked):
-
-$$\theta^{t} = \\overline{\theta^{t}}$$
-
-BatchNorm buffers are aggregated by simple averaging (no FedDyn correction).
 
 ## Expected Output
 
@@ -216,22 +168,13 @@ Each round prints evaluation results like:
 ```
 
 With data_set="cifar10", num_clients=100, client_frac=0.25, local_epochs=5, batch_size=50, lr=1e-2, rounds=200, partition="niid", alpha=0.4, lr_patience=10, min_lr=1e-5:
-<br>83 Round ACC=60.65%, loss=1.122256
-<br>96 Round ACC=63.43%, loss=1.039685
-<br>106 Round ACC=65.97%, loss=1.004173
-<br>117 Round ACC=67.29%, loss=0.951618
-<br>128 Round ACC=68.31%, loss=0.939058
-<br>134 Round ACC=69.24%, loss=0.933948
-<br>142 Round ACC=69.70%, loss=0.896229
-<br>144 Round ACC=70.21%, loss=0.907815
-<br>145 Round ACC=70.63%, loss=0.875592
-<br>151 Round ACC=71.42%, loss=0.848190
-<br>152 Round ACC=72.03%, loss=0.853616
-<br>159 Round ACC=72.41%, loss=0.816083
-<br>163 Round ACC=73.27%, loss=0.789843
-<br>167 Round ACC=73.91%, loss=0.774350
-<br>189 Round ACC=74.31%, loss=0.742489
-<br>200 Round ACC=75.38%, loss=0.723625
-
-
-
+<br>79 Round ACC=60.91%, loss=1.128906
+<br>85 Round ACC=62.36%, loss=1.098357
+<br>93 Round ACC=65.28%, loss=1.024822
+<br>109 Round ACC=69.61%, loss=0.944319
+<br>132 Round ACC=73.68%, loss=0.800382
+<br>151 Round ACC=76.91%, loss=0.739485
+<br>166 Round ACC=78.16%, loss=0.676211
+<br>183 Round ACC=78.83%, loss=0.631958
+<br>191 Round ACC=81.23%, loss=0.580031
+<br>200 Round ACC=81.77%, loss=0.594970
