@@ -124,6 +124,7 @@ Key arguments (from utils/parser.py):
 	  •	--lr-threshold (default 1e-4)
 	  •	--lr-cooldown (default 0)
 ```
+
 ## FedSAM Implementation Notes
 
 ### 1) Client-side FedSAM Update (fl/fedsam.py)
