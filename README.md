@@ -137,7 +137,6 @@ $$\min_{w}\; \max_{\|\epsilon\|\le\rho}\; \mathcal{L}_k(w + \epsilon)$$
 
 **A standard two-step SAM update is:**
 
-
 1.	**Compute gradient at current weights:**
 
     $$g = \nabla \mathcal{L}_k(w)$$
