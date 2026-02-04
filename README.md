@@ -87,7 +87,7 @@ Key arguments (from utils/parser.py):
 	  •	--seed (default: 845)
 	  •	--device in {auto,cpu,cuda,mps}
 
-	•	Training method
+	•	Training parameter
 	  •	--sam-rho (FedSAM rho, default 0.05)
 
 	•	Dataset
